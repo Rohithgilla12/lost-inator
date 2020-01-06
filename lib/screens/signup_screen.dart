@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lost_inator/screens/login_screen.dart';
+import 'package:lost_inator/services/auth_services.dart';
 
 class SignupScreen extends StatefulWidget {
   static final String id = "signupScreen";
@@ -13,6 +14,7 @@ class _SignupScreenState extends State<SignupScreen> {
   _submit() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+      AuthService.signUpUser(context, _name, _email, _password);
       print("Email is  $_email , password is $_password and name is $_name ");
     }
   }
