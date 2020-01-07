@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lost_inator/screens/signup_screen.dart';
+import 'package:lost_inator/services/auth_services.dart';
 
 class LoginScreen extends StatefulWidget {
   static final String id = "loginScreen";
@@ -13,6 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _submit() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+      AuthService.login(context, _email, _password);
       print("Email is  $_email and password is $_password");
     }
   }
@@ -26,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Locatinator",
+            "Lost-inator",
             style: TextStyle(
                 fontSize: 32.0,
                 color: Colors.brown,

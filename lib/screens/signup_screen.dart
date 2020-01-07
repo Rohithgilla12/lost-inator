@@ -28,7 +28,7 @@ class _SignupScreenState extends State<SignupScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Locatinator",
+            "Lost-inator",
             style: TextStyle(
                 fontSize: 32.0,
                 color: Colors.brown,

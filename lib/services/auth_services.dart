@@ -19,4 +19,18 @@ class AuthService {
       print(e);
     }
   }
+
+  static void login(BuildContext context, String email, String password) async {
+    try {
+      AuthResult _authResult = await authRef.signInWithEmailAndPassword(
+          email: email, password: password);
+      print("Logged in as $_authResult");
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static void logout() {
+    authRef.signOut();
+  }
 }
