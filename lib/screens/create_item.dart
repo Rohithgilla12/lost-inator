@@ -1,10 +1,15 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/tag.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lost_inator/models/item_model.dart';
+import 'package:lost_inator/services/database_services.dart';
+import 'package:lost_inator/services/storage_service.dart';
 
 class CreateScreen extends StatefulWidget {
   @override
@@ -88,9 +93,27 @@ class _CreateScreenState extends State<CreateScreen> {
       );
     }
 
-    _submit() {
+    _submit() async {
       if (_tags.isNotEmpty && _image != null) {
-        print("good to go");
+        setState(() {
+          _isLoading = true;
+        });
+        // Create Item
+        FirebaseUser user = await FirebaseAuth.instance.currentUser();
+        String imageUrl = await StorageSerivce.uploadItem(_image);
+        ItemModel itemModel = ItemModel(
+          imageUrl: imageUrl,
+          authorID: user.uid,
+          tags: _tags,
+          timestamp: Timestamp.fromDate(DateTime.now()),
+        );
+        DatabaseService.createItem(itemModel);
+        // Reset Data
+        setState(() {
+          _tags = [];
+          _image = null;
+          _isLoading = false;
+        });
       }
     }
 
@@ -112,6 +135,15 @@ class _CreateScreenState extends State<CreateScreen> {
           height: height,
           child: Column(
             children: <Widget>[
+              _isLoading
+                  ? Padding(
+                      padding: EdgeInsets.only(bottom: 10.0),
+                      child: LinearProgressIndicator(
+                        backgroundColor: Colors.blue[200],
+                        valueColor: AlwaysStoppedAnimation(Colors.blue),
+                      ),
+                    )
+                  : SizedBox.shrink(),
               GestureDetector(
                 onTap: _iosBottomSheet,
                 child: Container(
@@ -141,7 +173,7 @@ class _CreateScreenState extends State<CreateScreen> {
                   decoration: InputDecoration(labelText: "Item name"),
                 ),
               ),
-              _tags.length >= 1
+              _tags.isNotEmpty
                   ? Padding(
                       padding: EdgeInsets.symmetric(vertical: 15.0),
                       child: Tags(
