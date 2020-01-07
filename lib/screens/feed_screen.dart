@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lost_inator/services/auth_services.dart';
 
 class FeedScreen extends StatefulWidget {
   @override
@@ -15,9 +16,13 @@ class _FeedScreenState extends State<FeedScreen> {
           "Lost-inator",
           style: TextStyle(
             color: Colors.black,
-            fontSize: 35.0,
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.exit_to_app),
+              onPressed: () => AuthService.logout())
+        ],
       ),
       body: Text("FeedScreen"),
     );
