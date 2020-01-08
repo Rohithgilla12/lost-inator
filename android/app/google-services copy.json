@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "270399964503",
+    "firebase_url": "https://locat-inator.firebaseio.com",
+    "project_id": "locat-inator",
+    "storage_bucket": "locat-inator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270399964503:android:28714e2a92e398aeebaa12",
+        "android_client_info": {
+          "package_name": "com.example.lost_inator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270399964503-6pk62i31i31gl6noahg3ou2inf38olsh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-2SFrXhDwm4P0W9jmoI2XVLjEbOzKkfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270399964503-6pk62i31i31gl6noahg3ou2inf38olsh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "270399964503-d2u3a1p2ujkd4563p6po1jguqv0mvmus.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.lostInator"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
