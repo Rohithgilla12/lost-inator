@@ -17,4 +17,13 @@ class ItemModel {
         authorID: doc['authorID'],
         timestamp: doc['timestamp']);
   }
+
+  factory ItemModel.fromJson(Map<String, dynamic> doc) {
+    List<String> tagList = doc['tags'].cast<String>();
+    return ItemModel(
+        authorID: doc["authorID"],
+        imageUrl: doc['imageUrl'],
+        tags: tagList,
+        timestamp: doc['timestamp']);
+  }
 }
