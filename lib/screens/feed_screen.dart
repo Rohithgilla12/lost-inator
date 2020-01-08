@@ -27,7 +27,7 @@ class _FeedScreenState extends State<FeedScreen> {
     });
   }
 
-  Widget _itemView(ItemModel item) {
+  Widget itemView(ItemModel item) {
     return (Column(
       children: <Widget>[
         Padding(
@@ -94,7 +94,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   child: ListView.builder(
                     itemCount: _itemPosts.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return _itemView(_itemPosts[index]);
+                      return itemView(_itemPosts[index]);
                     },
                   ),
                 )

@@ -1,4 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tags/tag.dart';
+import 'package:lost_inator/models/item_model.dart';
+import 'package:lost_inator/services/database_services.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -6,10 +11,92 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  TextEditingController _searchController = TextEditingController();
+  List<ItemModel> itemsMatched = [];
+
+  _clearSearch() {
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _searchController.clear());
+    setState(() {
+      itemsMatched = [];
+    });
+  }
+
+  Widget itemView(ItemModel item) {
+    return (Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0),
+          child: Container(
+            height: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: CachedNetworkImageProvider(item.imageUrl),
+                    fit: BoxFit.cover)),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Tags 🏷",
+            style: TextStyle(fontSize: 18.0),
+          ),
+        ),
+        Tags(
+          itemCount: item.tags.length,
+          itemBuilder: (int index) {
+            final itemTag = item.tags[index];
+            return ItemTags(
+              index: index,
+              title: itemTag,
+            );
+          },
+        ),
+      ],
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("SearchScreen"),
-    );
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: "Search 🔎",
+                prefixIcon: Icon(Icons.search),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: _clearSearch,
+                )),
+            onSubmitted: (input) async {
+              if (input.isNotEmpty) {
+                FirebaseUser user = await FirebaseAuth.instance.currentUser();
+                List<ItemModel> itemPosts =
+                    await DatabaseService.searchItems(input, user.uid);
+                setState(() {
+                  itemsMatched = itemPosts;
+                });
+              }
+            },
+          ),
+        ),
+        body: Column(
+          children: <Widget>[
+            itemsMatched.isEmpty
+                ? SizedBox(
+                    height: 20.0,
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                        itemCount: itemsMatched.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return itemView(itemsMatched[index]);
+                        }),
+                  )
+          ],
+        ));
   }
 }

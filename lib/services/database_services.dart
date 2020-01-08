@@ -22,6 +22,18 @@ class DatabaseService {
     userItemSnapshot.documents.forEach((doc) {
       items.add(ItemModel.fromJson(doc.data));
     });
+    return items;
+  }
+
+  static Future<List<ItemModel>> searchItems(
+      String tagName, String userID) async {
+    final userItemRef = itemsRef.document(userID).collection("userItems");
+    QuerySnapshot matchedSnapshot =
+        await userItemRef.where("tags", arrayContains: tagName).getDocuments();
+    List<ItemModel> items = [];
+    matchedSnapshot.documents.forEach((doc) {
+      items.add(ItemModel.fromJson(doc.data));
+    });
     print(items);
     return items;
   }
