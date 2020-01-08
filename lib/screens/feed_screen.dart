@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tags/tag.dart';
 import 'package:lost_inator/models/item_model.dart';
 import 'package:lost_inator/services/auth_services.dart';
 import 'package:lost_inator/services/database_services.dart';
@@ -23,6 +25,40 @@ class _FeedScreenState extends State<FeedScreen> {
       _itemPosts = itemPosts;
       _isLoading = false;
     });
+  }
+
+  Widget _itemView(ItemModel item) {
+    return (Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0),
+          child: Container(
+            height: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: CachedNetworkImageProvider(item.imageUrl),
+                    fit: BoxFit.cover)),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Tags 🏷",
+            style: TextStyle(fontSize: 18.0),
+          ),
+        ),
+        Tags(
+          itemCount: item.tags.length,
+          itemBuilder: (int index) {
+            final itemTag = item.tags[index];
+            return ItemTags(
+              index: index,
+              title: itemTag,
+            );
+          },
+        ),
+      ],
+    ));
   }
 
   @override
@@ -58,7 +94,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   child: ListView.builder(
                     itemCount: _itemPosts.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Text(_itemPosts[index].imageUrl);
+                      return _itemView(_itemPosts[index]);
                     },
                   ),
                 )
