@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_inator/screens/signup_screen.dart';
 import 'package:lost_inator/services/auth_services.dart';
+import 'package:lost_inator/utils/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   static final String id = "loginScreen";
@@ -22,7 +26,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      // resizeToAvoidBottomPadding: false,
+      body: SingleChildScrollView(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

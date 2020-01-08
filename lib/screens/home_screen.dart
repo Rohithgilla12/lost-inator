@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
           FeedScreen(),
           SearchScreen(),
           CreateScreen(),
-          ProfileScreen(),
+          // ProfileScreen(),
         ],
         onPageChanged: (int index) {
           setState(() {
@@ -58,9 +58,9 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.add_a_photo),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.person),
+          // ),
         ],
       ),
     );

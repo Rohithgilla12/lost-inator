@@ -61,6 +61,30 @@ class _FeedScreenState extends State<FeedScreen> {
     ));
   }
 
+  _showDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return (AlertDialog(
+            title: Text("Alert!"),
+            content: Text("Are you sure you want to logout!"),
+            actions: <Widget>[
+              FlatButton(
+                  child: new Text("No"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }),
+              FlatButton(
+                  child: new Text("Yes"),
+                  onPressed: () {
+                    AuthService.logout();
+                    Navigator.pop(context);
+                  }),
+            ],
+          ));
+        });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -79,9 +103,7 @@ class _FeedScreenState extends State<FeedScreen> {
           ),
         ),
         actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.exit_to_app),
-              onPressed: () => AuthService.logout())
+          IconButton(icon: Icon(Icons.exit_to_app), onPressed: _showDialog)
         ],
       ),
       body: Column(
