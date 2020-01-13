@@ -22,12 +22,10 @@ class AuthService {
 
   static void login(BuildContext context, String email, String password) async {
     try {
-      print("I came here");
       AuthResult _authResult = await authRef.signInWithEmailAndPassword(
           email: email, password: password);
       print("Logged in as $_authResult");
     } catch (e) {
-      print("I came here too");
       print(e);
     }
   }
