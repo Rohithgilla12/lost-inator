@@ -103,11 +103,13 @@ class _CreateScreenState extends State<CreateScreen> {
         FirebaseUser user = await FirebaseAuth.instance.currentUser();
         String imageUrl = await StorageSerivce.uploadItem(_image);
         List<String> cloudTags = await MLService.GetLabels(_image);
+        cloudTags.addAll(_tags);
         ItemModel itemModel = ItemModel(
           imageUrl: imageUrl,
           authorID: user.uid,
           tags: _tags,
           timestamp: Timestamp.fromDate(DateTime.now()),
+          searchTags: cloudTags,
         );
         DatabaseService.createItem(itemModel);
         // Reset Data

@@ -8,7 +8,8 @@ class DatabaseService {
       'imageUrl': item.imageUrl,
       'timestamp': item.timestamp,
       'authorID': item.authorID,
-      'tags': item.tags
+      'tags': item.tags,
+      'searchTags': item.searchTags
     });
   }
 
