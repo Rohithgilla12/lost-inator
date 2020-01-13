@@ -9,6 +9,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lost_inator/models/item_model.dart';
 import 'package:lost_inator/services/database_services.dart';
+import 'package:lost_inator/services/ml_services.dart';
 import 'package:lost_inator/services/storage_service.dart';
 
 class CreateScreen extends StatefulWidget {
@@ -101,6 +102,7 @@ class _CreateScreenState extends State<CreateScreen> {
         // Create Item
         FirebaseUser user = await FirebaseAuth.instance.currentUser();
         String imageUrl = await StorageSerivce.uploadItem(_image);
+        List<String> cloudTags = await MLService.GetLabels(_image);
         ItemModel itemModel = ItemModel(
           imageUrl: imageUrl,
           authorID: user.uid,
