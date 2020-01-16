@@ -40,7 +40,11 @@ class DatabaseService {
 
   static Future<void> archive(ItemModel item) async {
     //Adding in archive db
-    await archiveRef.document(item.authorID).collection("userItems").document(item.id).setData({
+    await archiveRef
+        .document(item.authorID)
+        .collection("userItems")
+        .document(item.id)
+        .setData({
       'imageUrl': item.imageUrl,
       'timestamp': item.timestamp,
       'authorID': item.authorID,
@@ -53,6 +57,5 @@ class DatabaseService {
         .collection("userItems")
         .document(item.id)
         .delete();
-    print(item.id);
   }
 }

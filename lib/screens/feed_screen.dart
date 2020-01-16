@@ -65,10 +65,58 @@ class _FeedScreenState extends State<FeedScreen> {
                 alignment: Alignment.centerRight,
                 icon: Icon(Icons.archive),
                 onPressed: () async {
-                  DatabaseService.archive(item);
-                  setState(() {
-                    _itemPosts.remove(item);
-                  });
+                  Platform.isIOS
+                      ? showCupertinoDialog(
+                          context: context,
+                          builder: (context) {
+                            return (CupertinoAlertDialog(
+                              title: Text("Archive Alert"),
+                              content:
+                                  Text("Are you sure you want to archive?"),
+                              actions: <Widget>[
+                                CupertinoDialogAction(
+                                  child: Text("No"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                CupertinoDialogAction(
+                                    isDefaultAction: true,
+                                    child: Text("Yes"),
+                                    onPressed: () {
+                                      DatabaseService.archive(item);
+                                      setState(() {
+                                        _itemPosts.remove(item);
+                                      });
+                                      Navigator.pop(context);
+                                    })
+                              ],
+                            ));
+                          })
+                      : showDialog(
+                          context: context,
+                          builder: (context) {
+                            return (AlertDialog(
+                              title: Text("Alert!"),
+                              content: Text("Are you sure you want to logout!"),
+                              actions: <Widget>[
+                                FlatButton(
+                                    child: new Text("No"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    }),
+                                FlatButton(
+                                    child: new Text("Yes"),
+                                    onPressed: () {
+                                      DatabaseService.archive(item);
+                                      setState(() {
+                                        _itemPosts.remove(item);
+                                      });
+                                      Navigator.pop(context);
+                                    }),
+                              ],
+                            ));
+                          });
                 },
               ),
             ],
