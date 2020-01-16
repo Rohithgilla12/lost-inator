@@ -21,7 +21,7 @@ class DatabaseService {
         .getDocuments();
     List<ItemModel> items = [];
     userItemSnapshot.documents.forEach((doc) {
-      items.add(ItemModel.fromJson(doc.data));
+      items.add(ItemModel.fromJson(doc.data, doc.documentID));
     });
     return items;
   }
@@ -35,7 +35,24 @@ class DatabaseService {
     matchedSnapshot.documents.forEach((doc) {
       items.add(ItemModel.fromJson(doc.data));
     });
-    print(items);
     return items;
+  }
+
+  static Future<void> archive(ItemModel item) async {
+    //Adding in archive db
+    await archiveRef.document(item.authorID).collection("userItems").document(item.id).setData({
+      'imageUrl': item.imageUrl,
+      'timestamp': item.timestamp,
+      'authorID': item.authorID,
+      'tags': item.tags,
+      'searchTags': item.searchTags
+    });
+    //Removing from items db
+    await itemsRef
+        .document(item.authorID)
+        .collection("userItems")
+        .document(item.id)
+        .delete();
+    print(item.id);
   }
 }

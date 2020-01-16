@@ -26,12 +26,13 @@ class ItemModel {
         timestamp: doc['timestamp']);
   }
 
-  factory ItemModel.fromJson(Map<String, dynamic> doc) {
+  factory ItemModel.fromJson(Map<String, dynamic> doc, [String documentID]) {
     List<String> tagList = doc['tags'].cast<String>();
     List<String> searchList =
         doc['searchTags'] != null ? doc['searchTags'].cast<String>() : [];
-
+    String id = documentID != null ? documentID : "";
     return ItemModel(
+        id: id,
         authorID: doc["authorID"],
         imageUrl: doc['imageUrl'],
         tags: tagList,
