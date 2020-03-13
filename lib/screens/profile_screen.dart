@@ -12,14 +12,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          "Lost-inator",
+          'Lost-inator',
           style: TextStyle(
             color: Colors.black,
             fontSize: 35.0,
           ),
         ),
       ),
-      body: Text("ProfileScreen"),
+      body: const Text('ProfileScreen'),
     );
   }
 }

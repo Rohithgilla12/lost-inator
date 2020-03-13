@@ -11,10 +11,10 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  TextEditingController _searchController = TextEditingController();
-  List<ItemModel> itemsMatched = [];
+  final TextEditingController _searchController = TextEditingController();
+  List<ItemModel> itemsMatched = <ItemModel>[];
 
-  _clearSearch() {
+  void _clearSearch() {
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _searchController.clear());
     setState(() {
@@ -23,10 +23,10 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget itemView(ItemModel item) {
-    return (Column(
+    return Column(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 15.0),
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
           child: Container(
             height: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
@@ -35,17 +35,17 @@ class _SearchScreenState extends State<SearchScreen> {
                     fit: BoxFit.cover)),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
           child: Text(
-            "Tags 🏷",
+            'Tags 🏷',
             style: TextStyle(fontSize: 18.0),
           ),
         ),
         Tags(
           itemCount: item.tags.length,
           itemBuilder: (int index) {
-            final itemTag = item.tags[index];
+            final String itemTag = item.tags[index];
             return ItemTags(
               index: index,
               title: itemTag,
@@ -53,7 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
           },
         ),
       ],
-    ));
+    );
   }
 
   @override
@@ -65,16 +65,17 @@ class _SearchScreenState extends State<SearchScreen> {
             controller: _searchController,
             decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: "Search 🔎",
+                hintText: 'Search 🔎',
                 prefixIcon: Icon(Icons.search),
                 suffixIcon: IconButton(
                   icon: Icon(Icons.clear),
                   onPressed: _clearSearch,
                 )),
-            onSubmitted: (input) async {
+            onSubmitted: (String input) async {
               if (input.isNotEmpty) {
-                FirebaseUser user = await FirebaseAuth.instance.currentUser();
-                List<ItemModel> itemPosts =
+                final FirebaseUser user =
+                    await FirebaseAuth.instance.currentUser();
+                final List<ItemModel> itemPosts =
                     await DatabaseService.searchItems(input, user.uid);
                 setState(() {
                   itemsMatched = itemPosts;
@@ -86,7 +87,7 @@ class _SearchScreenState extends State<SearchScreen> {
         body: Column(
           children: <Widget>[
             itemsMatched.isEmpty
-                ? SizedBox(
+                ? const SizedBox(
                     height: 20.0,
                   )
                 : Expanded(

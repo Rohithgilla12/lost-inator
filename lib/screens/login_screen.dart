@@ -1,25 +1,21 @@
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_inator/screens/signup_screen.dart';
 import 'package:lost_inator/services/auth_services.dart';
-import 'package:lost_inator/utils/constants.dart';
 
 class LoginScreen extends StatefulWidget {
-  static final String id = "loginScreen";
+  static const String id = 'loginScreen';
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email, _password;
-  _submit() {
+  void _submit() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       AuthService.login(context, _email, _password);
-      print("Email is  $_email and password is $_password");
+      print('Email is  $_email and password is $_password');
     }
   }
 
@@ -33,21 +29,21 @@ class _LoginScreenState extends State<LoginScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Lost-inator",
+            'Lost-inator',
             style: TextStyle(
                 fontSize: 32.0,
                 color: Colors.brown,
                 fontWeight: FontWeight.bold),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20.0,
           ),
-          Image(
-            image: AssetImage("assets/images/ctrlf.png"),
+          const Image(
+            image: AssetImage('assets/images/ctrlf.png'),
             height: 65.0,
           ),
-          Image(
-            image: AssetImage("assets/images/panda.png"),
+          const Image(
+            image: AssetImage('assets/images/panda.png'),
             height: 220.0,
           ),
           Form(
@@ -56,38 +52,38 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 30.0,
                     vertical: 10.0,
                   ),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      labelText: "Email",
+                      labelText: 'Email',
                       icon: Icon(Icons.mail_outline),
                     ),
-                    validator: (input) => !input.contains("@")
-                        ? "Please input valid email id"
+                    validator: (String input) => !input.contains('@')
+                        ? 'Please input valid email id'
                         : null,
-                    onSaved: (input) => _email = input,
+                    onSaved: (String input) => _email = input,
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 30.0,
                     vertical: 10.0,
                   ),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      labelText: "Password",
+                      labelText: 'Password',
                       icon: Icon(Icons.vpn_key),
                     ),
-                    validator: (input) =>
-                        input.length < 6 ? "Check your password field" : null,
-                    onSaved: (input) => _password = input,
+                    validator: (String input) =>
+                        input.length < 6 ? 'Check your password field' : null,
+                    onSaved: (String input) => _password = input,
                     obscureText: true,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
                 Container(
@@ -95,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: FlatButton(
                     onPressed: _submit,
                     color: Colors.brown[300],
-                    child: Text("Login"),
+                    child: const Text('Login'),
                   ),
                 ),
                 Container(
@@ -104,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () =>
                         Navigator.pushNamed(context, SignupScreen.id),
                     color: Colors.brown[300],
-                    child: Text("Sign up"),
+                    child: const Text('Sign up'),
                   ),
                 ),
               ],

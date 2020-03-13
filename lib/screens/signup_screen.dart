@@ -3,19 +3,19 @@ import 'package:lost_inator/screens/login_screen.dart';
 import 'package:lost_inator/services/auth_services.dart';
 
 class SignupScreen extends StatefulWidget {
-  static final String id = "signupScreen";
+  static const String id = 'signupScreen';
   @override
   _SignupScreenState createState() => _SignupScreenState();
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email, _password, _name;
-  _submit() {
+  void _submit() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       AuthService.signUpUser(context, _name, _email, _password);
-      print("Email is  $_email , password is $_password and name is $_name ");
+      print('Email is  $_email , password is $_password and name is $_name ');
     }
   }
 
@@ -28,21 +28,21 @@ class _SignupScreenState extends State<SignupScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            "Lost-inator",
+            'Lost-inator',
             style: TextStyle(
                 fontSize: 32.0,
                 color: Colors.brown,
                 fontWeight: FontWeight.bold),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20.0,
           ),
-          Image(
-            image: AssetImage("assets/images/ctrlf.png"),
+          const Image(
+            image: AssetImage('assets/images/ctrlf.png'),
             height: 65.0,
           ),
-          Image(
-            image: AssetImage("assets/images/panda.png"),
+          const Image(
+            image: AssetImage('assets/images/panda.png'),
             height: 220.0,
           ),
           Form(
@@ -51,53 +51,53 @@ class _SignupScreenState extends State<SignupScreen> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 30.0,
                     vertical: 10.0,
                   ),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      labelText: "Name",
+                      labelText: 'Name',
                       icon: Icon(Icons.person_outline),
                     ),
-                    validator: (input) =>
-                        input.isEmpty ? "Please input valid name" : null,
-                    onSaved: (input) => _name = input,
+                    validator: (String input) =>
+                        input.isEmpty ? 'Please input valid name' : null,
+                    onSaved: (String input) => _name = input,
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 30.0,
                     vertical: 10.0,
                   ),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      labelText: "Email",
+                      labelText: 'Email',
                       icon: Icon(Icons.mail_outline),
                     ),
-                    validator: (input) => !input.contains("@")
-                        ? "Please input valid email id"
+                    validator: (String input) => !input.contains('@')
+                        ? 'Please input valid email id'
                         : null,
-                    onSaved: (input) => _email = input,
+                    onSaved: (String input) => _email = input,
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 30.0,
                     vertical: 10.0,
                   ),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      labelText: "Password",
+                      labelText: 'Password',
                       icon: Icon(Icons.vpn_key),
                     ),
-                    validator: (input) =>
-                        input.length < 6 ? "Check your password field" : null,
-                    onSaved: (input) => _password = input,
+                    validator: (String input) =>
+                        input.length < 6 ? 'Check your password field' : null,
+                    onSaved: (String input) => _password = input,
                     obscureText: true,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
                 Container(
@@ -105,7 +105,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: FlatButton(
                     onPressed: _submit,
                     color: Colors.brown[300],
-                    child: Text("Signup"),
+                    child: const Text('Signup'),
                   ),
                 ),
                 Container(
@@ -114,7 +114,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     onPressed: () =>
                         Navigator.pushNamed(context, LoginScreen.id),
                     color: Colors.brown[300],
-                    child: Text("Login"),
+                    child: const Text('Login'),
                   ),
                 ),
               ],

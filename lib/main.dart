@@ -7,11 +7,10 @@ import 'package:lost_inator/screens/signup_screen.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  @override
   Widget _getScreenId() {
     return StreamBuilder<FirebaseUser>(
       stream: FirebaseAuth.instance.onAuthStateChanged,
-      builder: (BuildContext context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
         if (snapshot.hasData) {
           print(snapshot);
           return HomeScreen();
@@ -22,15 +21,16 @@ class MyApp extends StatelessWidget {
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Lost-inator',
       home: _getScreenId(),
       routes: {
-        LoginScreen.id: (context) => LoginScreen(),
-        SignupScreen.id: (context) => SignupScreen(),
-        HomeScreen.id: (context) => HomeScreen(),
+        LoginScreen.id: (BuildContext context) => LoginScreen(),
+        SignupScreen.id: (BuildContext context) => SignupScreen(),
+        HomeScreen.id: (BuildContext context) => HomeScreen(),
       },
       theme: ThemeData(
           primaryIconTheme: Theme.of(context).primaryIconTheme.copyWith(

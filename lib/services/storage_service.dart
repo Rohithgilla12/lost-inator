@@ -8,20 +8,21 @@ import 'package:uuid/uuid.dart';
 
 class StorageSerivce {
   static Future<String> uploadItem(File imageFile) async {
-    String photoId = Uuid().v4();
-    File image = await compressImage(photoId, imageFile);
-    StorageUploadTask uploadTask =
+    final String photoId = Uuid().v4();
+    final File image = await compressImage(photoId, imageFile);
+    final StorageUploadTask uploadTask =
         storageRef.child('images/items/item_$photoId.jpg').putFile(image);
-    StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
-    String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+    final StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
+    final String downloadUrl =
+        await storageTaskSnapshot.ref.getDownloadURL() as String;
     return downloadUrl;
   }
 
   static Future<File> compressImage(String photoId, File imageFile) async {
-    final tempDir = await getTemporaryDirectory();
-    final path = tempDir.path;
-    File compressedImage = await FlutterImageCompress.compressAndGetFile(
-        imageFile.absolute.path, "$path/img_$photoId.jpg",
+    final Directory tempDir = await getTemporaryDirectory();
+    final String path = tempDir.path;
+    final File compressedImage = await FlutterImageCompress.compressAndGetFile(
+        imageFile.absolute.path, '$path/img_$photoId.jpg',
         quality: 70);
     return compressedImage;
   }

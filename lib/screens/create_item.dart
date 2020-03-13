@@ -19,74 +19,74 @@ class CreateScreen extends StatefulWidget {
 
 class _CreateScreenState extends State<CreateScreen> {
   File _image;
-  String _caption = "";
-  List<String> _tags = [];
+  String _caption = '';
+  List<String> _tags = <String>[];
   TextEditingController textEditingController = TextEditingController();
   bool _isLoading = false;
   final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
-  _getAllItem() {
-    List<Item> lst = _tagStateKey.currentState?.getAllItem;
-    if (lst != null)
-      lst.where((a) => a.active == true).forEach((a) => print(a.title));
-  }
+  // _getAllItem() {
+  //   List<Item> lst = _tagStateKey.currentState?.getAllItem;
+  //   if (lst != null)
+  //     lst.where((a) => a.active == true).forEach((a) => print(a.title));
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
 
     void _handleTagSubmit(String value) {
       // print(_caption);
       _tags.add(_caption);
       setState(() {
-        _caption = "";
+        _caption = '';
       });
       textEditingController.clear();
     }
 
-    _cropImage(File imageFile) async {
-      File croppedImage = await ImageCropper.cropImage(
+    Future<File> _cropImage(File imageFile) async {
+      final File croppedImage = await ImageCropper.cropImage(
           sourcePath: imageFile.path,
-          aspectRatio: CropAspectRatio(
+          aspectRatio: const CropAspectRatio(
             ratioX: 1.0,
             ratioY: 1.0,
           ));
       return croppedImage;
     }
 
-    _handleImage(ImageSource source) async {
+    Future<void> _handleImage(ImageSource source) async {
       Navigator.pop(context);
-      File imageFile = await ImagePicker.pickImage(source: source);
+      final File imageFile = await ImagePicker.pickImage(source: source);
       if (imageFile != null) {
-        File croppedImage = await _cropImage(imageFile);
+        final File croppedImage = await _cropImage(imageFile);
         setState(() {
           _image = croppedImage;
         });
       }
     }
 
-    _iosBottomSheet() {
-      print("Add item");
-      showCupertinoModalPopup(
+    void _iosBottomSheet() {
+      print('Add item');
+      showCupertinoModalPopup<dynamic>(
         context: context,
         builder: (BuildContext context) {
           return CupertinoActionSheet(
-            title: Text(
-              "Add item 📸",
+            title: const Text(
+              'Add item 📸',
               style: TextStyle(fontSize: 20.0),
             ),
             actions: <Widget>[
               CupertinoActionSheetAction(
-                child: Text("Take photo 📷"),
+                child: const Text('Take photo 📷'),
                 onPressed: () => _handleImage(ImageSource.camera),
               ),
               CupertinoActionSheetAction(
-                child: Text("Choose from Gallery"),
+                child: const Text('Choose from Gallery'),
                 onPressed: () => _handleImage(ImageSource.gallery),
               ),
             ],
             cancelButton: CupertinoActionSheetAction(
-              child: Text("Cancel ❌"),
+              child: const Text('Cancel ❌'),
               onPressed: () => Navigator.pop(context),
             ),
           );
@@ -94,17 +94,17 @@ class _CreateScreenState extends State<CreateScreen> {
       );
     }
 
-    _submit() async {
+    Future<void> _submit() async {
       if (_tags.isNotEmpty && _image != null) {
         setState(() {
           _isLoading = true;
         });
         // Create Item
-        FirebaseUser user = await FirebaseAuth.instance.currentUser();
-        String imageUrl = await StorageSerivce.uploadItem(_image);
-        List<String> cloudTags = await MLService.GetLabels(_image);
+        final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+        final String imageUrl = await StorageSerivce.uploadItem(_image);
+        final List<String> cloudTags = await MLService.getLabels(_image);
         cloudTags.addAll(_tags);
-        ItemModel itemModel = ItemModel(
+        final ItemModel itemModel = ItemModel(
           imageUrl: imageUrl,
           authorID: user.uid,
           tags: _tags,
@@ -114,7 +114,7 @@ class _CreateScreenState extends State<CreateScreen> {
         DatabaseService.createItem(itemModel);
         // Reset Data
         setState(() {
-          _tags = [];
+          _tags = <String>[];
           _image = null;
           _isLoading = false;
         });
@@ -125,7 +125,7 @@ class _CreateScreenState extends State<CreateScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          "Add item",
+          'Add item',
           style: TextStyle(
             color: Colors.black,
           ),
@@ -141,13 +141,13 @@ class _CreateScreenState extends State<CreateScreen> {
             children: <Widget>[
               _isLoading
                   ? Padding(
-                      padding: EdgeInsets.only(bottom: 10.0),
+                      padding: const EdgeInsets.only(bottom: 10.0),
                       child: LinearProgressIndicator(
                         backgroundColor: Colors.blue[200],
                         valueColor: AlwaysStoppedAnimation(Colors.blue),
                       ),
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
               GestureDetector(
                 onTap: _iosBottomSheet,
                 child: Container(
@@ -164,27 +164,27 @@ class _CreateScreenState extends State<CreateScreen> {
                         ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: TextField(
                   controller: textEditingController,
-                  onChanged: (input) => _caption = input,
+                  onChanged: (String input) => _caption = input,
                   onSubmitted: _handleTagSubmit,
-                  style: TextStyle(fontSize: 18.0),
-                  decoration: InputDecoration(labelText: "Item name"),
+                  style: const TextStyle(fontSize: 18.0),
+                  decoration: const InputDecoration(labelText: 'Item name'),
                 ),
               ),
               _tags.isNotEmpty
                   ? Padding(
-                      padding: EdgeInsets.symmetric(vertical: 15.0),
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
                       child: Tags(
                         key: _tagStateKey,
                         itemCount: _tags.length,
                         itemBuilder: (int index) {
-                          final item = _tags[index];
+                          final String item = _tags[index];
                           return ItemTags(
                             index: index,
                             title: item,
@@ -198,7 +198,7 @@ class _CreateScreenState extends State<CreateScreen> {
                         },
                       ),
                     )
-                  : SizedBox(
+                  : const SizedBox(
                       height: 10.0,
                     )
             ],

@@ -2,12 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_inator/screens/create_item.dart';
 import 'package:lost_inator/screens/feed_screen.dart';
-import 'package:lost_inator/screens/profile_screen.dart';
 import 'package:lost_inator/screens/search_screen.dart';
-import 'package:lost_inator/services/auth_services.dart';
 
 class HomeScreen extends StatefulWidget {
-  static final String id = "homeScreen";
+  static const String id = 'homeScreen';
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -46,7 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
             _currentTab = index;
           });
           _pageController.animateToPage(index,
-              duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeIn);
         },
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

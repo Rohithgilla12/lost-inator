@@ -6,25 +6,26 @@ class AuthService {
   static Future<void> signUpUser(
       BuildContext context, String name, String email, String password) async {
     try {
-      AuthResult _authResult = await authRef.createUserWithEmailAndPassword(
-          email: email, password: password);
-      FirebaseUser signedInUser = _authResult.user;
+      final AuthResult _authResult = await authRef
+          .createUserWithEmailAndPassword(email: email, password: password);
+      final FirebaseUser signedInUser = _authResult.user;
       if (signedInUser != null) {
         fireStoreRef
-            .collection("/users")
+            .collection('/users')
             .document(signedInUser.uid)
-            .setData({"name": name, "email": email, "profileImageUrl": ""});
+            .setData({'name': name, 'email': email, 'profileImageUrl': ''});
       }
     } catch (e) {
       print(e);
     }
   }
 
-  static void login(BuildContext context, String email, String password) async {
+  static Future<void> login(
+      BuildContext context, String email, String password) async {
     try {
-      AuthResult _authResult = await authRef.signInWithEmailAndPassword(
+      await authRef.signInWithEmailAndPassword(
           email: email, password: password);
-      print("Logged in as $_authResult");
+      // print(_authResult);
     } catch (e) {
       print(e);
     }
