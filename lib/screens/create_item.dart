@@ -144,7 +144,9 @@ class _CreateScreenState extends State<CreateScreen> {
                       padding: const EdgeInsets.only(bottom: 10.0),
                       child: LinearProgressIndicator(
                         backgroundColor: Colors.blue[200],
-                        valueColor: AlwaysStoppedAnimation(Colors.blue),
+                        valueColor: AlwaysStoppedAnimation(
+                          Colors.blue,
+                        ),
                       ),
                     )
                   : const SizedBox.shrink(),
@@ -173,13 +175,19 @@ class _CreateScreenState extends State<CreateScreen> {
                   controller: textEditingController,
                   onChanged: (String input) => _caption = input,
                   onSubmitted: _handleTagSubmit,
-                  style: const TextStyle(fontSize: 18.0),
-                  decoration: const InputDecoration(labelText: 'Item name'),
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                  ),
+                  decoration: const InputDecoration(
+                    labelText: 'Item name',
+                  ),
                 ),
               ),
               _tags.isNotEmpty
                   ? Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 15.0,
+                      ),
                       child: Tags(
                         key: _tagStateKey,
                         itemCount: _tags.length,
