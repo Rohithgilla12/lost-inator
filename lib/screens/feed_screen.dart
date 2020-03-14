@@ -204,18 +204,19 @@ class _FeedScreenState extends State<FeedScreen> {
       ),
       body: Column(
         children: <Widget>[
-          _isLoading
-              ? const SizedBox(
-                  height: 20.0,
-                )
-              : Expanded(
-                  child: ListView.builder(
-                    itemCount: _itemPosts.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return itemView(_itemPosts[index]);
-                    },
-                  ),
-                )
+          if (_isLoading)
+            const SizedBox(
+              height: 20.0,
+            )
+          else
+            Expanded(
+              child: ListView.builder(
+                itemCount: _itemPosts.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return itemView(_itemPosts[index]);
+                },
+              ),
+            )
         ],
       ),
     );

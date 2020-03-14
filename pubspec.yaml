@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -36,11 +36,14 @@ dependencies:
   flutter_tags: "^0.4.5"
   firebase_ml_vision: ^0.9.3+5
   uuid: ^2.0.2
+  built_value: ^7.0.9
+  built_collection: ^4.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   built_value_generator: ^7.0.9
+  build_runner: ^1.8.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -18,7 +18,7 @@ class _SearchScreenState extends State<SearchScreen> {
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _searchController.clear());
     setState(() {
-      itemsMatched = [];
+      itemsMatched = <ItemModel>[];
     });
   }
 
@@ -86,17 +86,18 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         body: Column(
           children: <Widget>[
-            itemsMatched.isEmpty
-                ? const SizedBox(
-                    height: 20.0,
-                  )
-                : Expanded(
-                    child: ListView.builder(
-                        itemCount: itemsMatched.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return itemView(itemsMatched[index]);
-                        }),
-                  )
+            if (itemsMatched.isEmpty)
+              const SizedBox(
+                height: 20.0,
+              )
+            else
+              Expanded(
+                child: ListView.builder(
+                    itemCount: itemsMatched.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return itemView(itemsMatched[index]);
+                    }),
+              )
           ],
         ));
   }

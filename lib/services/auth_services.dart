@@ -13,7 +13,11 @@ class AuthService {
         fireStoreRef
             .collection('/users')
             .document(signedInUser.uid)
-            .setData({'name': name, 'email': email, 'profileImageUrl': ''});
+            .setData(<String, dynamic>{
+          'name': name,
+          'email': email,
+          'profileImageUrl': ''
+        });
       }
     } catch (e) {
       print(e);

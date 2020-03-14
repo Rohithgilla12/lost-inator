@@ -4,7 +4,10 @@ import 'package:lost_inator/utils/constants.dart';
 
 class DatabaseService {
   static void createItem(ItemModel item) {
-    itemsRef.document(item.authorID).collection('userItems').add({
+    itemsRef
+        .document(item.authorID)
+        .collection('userItems')
+        .add(<String, dynamic>{
       'imageUrl': item.imageUrl,
       'timestamp': item.timestamp,
       'authorID': item.authorID,
@@ -19,11 +22,13 @@ class DatabaseService {
         .collection('userItems')
         .orderBy('timestamp', descending: true)
         .getDocuments();
-    final List<ItemModel> items = <ItemModel>[];
-    userItemSnapshot.documents.forEach((DocumentSnapshot doc) {
-      items.add(ItemModel.fromJson(doc.data, doc.documentID));
-    });
-    return items;
+    // final List<ItemModel> items = <ItemModel>[];
+    // userItemSnapshot.documents.forEach((DocumentSnapshot doc) {
+    //   items.add(ItemModel.fromJson(doc.data, doc.documentID));
+    // });
+    return userItemSnapshot.documents
+        .map((DocumentSnapshot e) => ItemModel.fromJson(e.data, e.documentID))
+        .toList();
   }
 
   static Future<List<ItemModel>> searchItems(
@@ -32,11 +37,14 @@ class DatabaseService {
         itemsRef.document(userID).collection('userItems');
     final QuerySnapshot matchedSnapshot =
         await userItemRef.where('tags', arrayContains: tagName).getDocuments();
-    final List<ItemModel> items = <ItemModel>[];
-    matchedSnapshot.documents.forEach((DocumentSnapshot doc) {
-      items.add(ItemModel.fromJson(doc.data));
-    });
-    return items;
+    // final List<ItemModel> items = <ItemModel>[];
+    return matchedSnapshot.documents
+        .map((DocumentSnapshot e) => ItemModel.fromJson(e.data))
+        .toList();
+    // matchedSnapshot.documents.forEach((DocumentSnapshot doc) {
+    //   items.add(ItemModel.fromJson(doc.data));
+    // });
+    // return items;
   }
 
   static Future<void> archive(ItemModel item) async {
@@ -45,7 +53,7 @@ class DatabaseService {
         .document(item.authorID)
         .collection('userItems')
         .document(item.id)
-        .setData({
+        .setData(<String, dynamic>{
       'imageUrl': item.imageUrl,
       'timestamp': item.timestamp,
       'authorID': item.authorID,

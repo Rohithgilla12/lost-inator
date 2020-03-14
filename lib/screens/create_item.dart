@@ -139,17 +139,18 @@ class _CreateScreenState extends State<CreateScreen> {
           height: height,
           child: Column(
             children: <Widget>[
-              _isLoading
-                  ? Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: LinearProgressIndicator(
-                        backgroundColor: Colors.blue[200],
-                        valueColor: AlwaysStoppedAnimation(
-                          Colors.blue,
-                        ),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
+              if (_isLoading)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: LinearProgressIndicator(
+                    backgroundColor: Colors.blue[200],
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.blue,
+                    ),
+                  ),
+                )
+              else
+                const SizedBox.shrink(),
               GestureDetector(
                 onTap: _iosBottomSheet,
                 child: Container(
@@ -183,32 +184,33 @@ class _CreateScreenState extends State<CreateScreen> {
                   ),
                 ),
               ),
-              _tags.isNotEmpty
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15.0,
-                      ),
-                      child: Tags(
-                        key: _tagStateKey,
-                        itemCount: _tags.length,
-                        itemBuilder: (int index) {
-                          final String item = _tags[index];
-                          return ItemTags(
-                            index: index,
-                            title: item,
-                            removeButton: ItemTagsRemoveButton(),
-                            onRemoved: () {
-                              setState(() {
-                                _tags.removeAt(index);
-                              });
-                            },
-                          );
+              if (_tags.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15.0,
+                  ),
+                  child: Tags(
+                    key: _tagStateKey,
+                    itemCount: _tags.length,
+                    itemBuilder: (int index) {
+                      final String item = _tags[index];
+                      return ItemTags(
+                        index: index,
+                        title: item,
+                        removeButton: ItemTagsRemoveButton(),
+                        onRemoved: () {
+                          setState(() {
+                            _tags.removeAt(index);
+                          });
                         },
-                      ),
-                    )
-                  : const SizedBox(
-                      height: 10.0,
-                    )
+                      );
+                    },
+                  ),
+                )
+              else
+                const SizedBox(
+                  height: 10.0,
+                )
             ],
           ),
         ),

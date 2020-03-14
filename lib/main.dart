@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Lost-inator',
       home: _getScreenId(),
-      routes: {
+      routes: <String, WidgetBuilder>{
         LoginScreen.id: (BuildContext context) => LoginScreen(),
         SignupScreen.id: (BuildContext context) => SignupScreen(),
         HomeScreen.id: (BuildContext context) => HomeScreen(),
