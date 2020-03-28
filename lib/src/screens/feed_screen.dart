@@ -1,37 +1,20 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_tags/tag.dart';
-import 'package:lost_inator/models/item_model.dart';
-import 'package:lost_inator/services/auth_services.dart';
-import 'package:lost_inator/services/database_services.dart';
+import 'package:lost_inator/src/actions/index.dart';
+import 'package:lost_inator/src/containers/is_loading_posts_container.dart';
+import 'package:lost_inator/src/containers/posts_container.dart';
+import 'package:lost_inator/src/models/app_state.dart';
+import 'package:lost_inator/src/models/post.dart';
 
-class FeedScreen extends StatefulWidget {
-  @override
-  _FeedScreenState createState() => _FeedScreenState();
-}
+class FeedScreen extends StatelessWidget {
+  const FeedScreen({Key key}) : super(key: key);
 
-class _FeedScreenState extends State<FeedScreen> {
-  List<ItemModel> _itemPosts = <ItemModel>[];
-  bool _isLoading = false;
-
-  Future<void> _setupItemFeed() async {
-    setState(() {
-      _isLoading = true;
-    });
-    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    final List<ItemModel> itemPosts =
-        await DatabaseService.getUserItems(user.uid);
-    setState(() {
-      _itemPosts = itemPosts;
-      _isLoading = false;
-    });
-  }
-
-  Widget itemView(ItemModel item) {
+  Widget itemView(BuildContext context, Post post) {
     return Column(
       children: <Widget>[
         Padding(
@@ -40,7 +23,7 @@ class _FeedScreenState extends State<FeedScreen> {
             height: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: CachedNetworkImageProvider(item.imageUrl),
+                image: CachedNetworkImageProvider(post.imageUrl),
                 fit: BoxFit.cover,
               ),
             ),
@@ -53,9 +36,9 @@ class _FeedScreenState extends State<FeedScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Tags(
-                    itemCount: item.tags.length,
+                    itemCount: post.tags.length,
                     itemBuilder: (int index) {
-                      final String itemTag = item.tags[index];
+                      final String itemTag = post.tags[index];
                       return ItemTags(
                         index: index,
                         title: itemTag,
@@ -74,8 +57,7 @@ class _FeedScreenState extends State<FeedScreen> {
                           builder: (BuildContext context) {
                             return CupertinoAlertDialog(
                               title: const Text('Archive Alert'),
-                              content: const Text(
-                                  'Are you sure you want to archive?'),
+                              content: const Text('Are you sure you want to archive?'),
                               actions: <Widget>[
                                 CupertinoDialogAction(
                                   child: const Text('No'),
@@ -84,25 +66,23 @@ class _FeedScreenState extends State<FeedScreen> {
                                   },
                                 ),
                                 CupertinoDialogAction(
-                                    isDefaultAction: true,
-                                    child: const Text('Yes'),
-                                    onPressed: () {
-                                      DatabaseService.archive(item);
-                                      setState(() {
-                                        _itemPosts.remove(item);
-                                      });
-                                      Navigator.pop(context);
-                                    })
+                                  isDefaultAction: true,
+                                  child: const Text('Yes'),
+                                  onPressed: () {
+                                    StoreProvider.of<AppState>(context).dispatch(ArchivePost(post));
+                                    Navigator.pop(context);
+                                  },
+                                )
                               ],
                             );
-                          })
+                          },
+                        )
                       : showDialog<dynamic>(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text('Alert!'),
-                              content: const Text(
-                                  'Are you sure you want to logout!'),
+                              content: const Text('Are you sure you want to logout!'),
                               actions: <Widget>[
                                 FlatButton(
                                     child: const Text('No'),
@@ -110,17 +90,16 @@ class _FeedScreenState extends State<FeedScreen> {
                                       Navigator.of(context).pop();
                                     }),
                                 FlatButton(
-                                    child: const Text('Yes'),
-                                    onPressed: () {
-                                      DatabaseService.archive(item);
-                                      setState(() {
-                                        _itemPosts.remove(item);
-                                      });
-                                      Navigator.pop(context);
-                                    }),
+                                  child: const Text('Yes'),
+                                  onPressed: () {
+                                    StoreProvider.of<AppState>(context).dispatch(ArchivePost(post));
+                                    Navigator.pop(context);
+                                  },
+                                ),
                               ],
                             );
-                          });
+                          },
+                        );
                 },
               ),
             ],
@@ -130,7 +109,7 @@ class _FeedScreenState extends State<FeedScreen> {
     );
   }
 
-  void _showDialog() {
+  void _showDialog(BuildContext context) {
     Platform.isIOS
         ? showCupertinoDialog<dynamic>(
             context: context,
@@ -147,14 +126,16 @@ class _FeedScreenState extends State<FeedScreen> {
                     },
                   ),
                   CupertinoDialogAction(
-                      child: const Text('Yes'),
-                      onPressed: () {
-                        AuthService.logout();
-                        Navigator.pop(context);
-                      })
+                    child: const Text('Yes'),
+                    onPressed: () {
+                      StoreProvider.of<AppState>(context).dispatch(SignOut());
+                      Navigator.pop(context);
+                    },
+                  )
                 ],
               );
-            })
+            },
+          )
         : showDialog<dynamic>(
             context: context,
             builder: (BuildContext context) {
@@ -168,20 +149,16 @@ class _FeedScreenState extends State<FeedScreen> {
                         Navigator.of(context).pop();
                       }),
                   FlatButton(
-                      child: const Text('Yes'),
-                      onPressed: () {
-                        AuthService.logout();
-                        Navigator.pop(context);
-                      }),
+                    child: const Text('Yes'),
+                    onPressed: () {
+                      StoreProvider.of<AppState>(context).dispatch(SignOut());
+                      Navigator.pop(context);
+                    },
+                  ),
                 ],
               );
-            });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _setupItemFeed();
+            },
+          );
   }
 
   @override
@@ -198,26 +175,36 @@ class _FeedScreenState extends State<FeedScreen> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.exit_to_app),
-            onPressed: _showDialog,
+            onPressed: () {
+              _showDialog(context);
+            },
           ),
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          if (_isLoading)
-            const SizedBox(
-              height: 20.0,
-            )
-          else
-            Expanded(
-              child: ListView.builder(
-                itemCount: _itemPosts.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return itemView(_itemPosts[index]);
-                },
-              ),
-            )
-        ],
+      body: IsLoadingPostsContainer(
+        builder: (BuildContext context, bool isLoading) {
+          return Column(
+            children: <Widget>[
+              if (isLoading)
+                const SizedBox(
+                  height: 20.0,
+                )
+              else
+                Expanded(
+                  child: PostsContainer(
+                    builder: (BuildContext context, List<Post> posts) {
+                      return ListView.builder(
+                        itemCount: posts.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return itemView(context, posts[index]);
+                        },
+                      );
+                    },
+                  ),
+                )
+            ],
+          );
+        },
       ),
     );
   }

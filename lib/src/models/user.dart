@@ -2,7 +2,7 @@ library user;
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:lost_inator/models/serializers.dart';
+import 'package:lost_inator/src/models/serializers.dart';
 import 'package:meta/meta.dart';
 
 part 'user.g.dart';
@@ -22,16 +22,20 @@ abstract class User implements Built<User, UserBuilder> {
         ..email = email;
     });
   }
-  factory User.fromJson(Map<dynamic, dynamic> json) =>
-      serializers.deserializeWith(serializer, json);
+
+  factory User.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
+
   User._();
-  // fields go here
+
   String get id;
+
   String get name;
+
+  @nullable
   String get profileImageUrl;
+
   String get email;
 
-  // factory User([updates(UserBuilder b)]) = _$User;
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 
   static Serializer<User> get serializer => _$userSerializer;

@@ -22,14 +22,16 @@ class _$UserSerializer implements StructuredSerializer<User> {
       serializers.serialize(object.id, specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
-      'profileImageUrl',
-      serializers.serialize(object.profileImageUrl,
-          specifiedType: const FullType(String)),
       'email',
       serializers.serialize(object.email,
           specifiedType: const FullType(String)),
     ];
-
+    if (object.profileImageUrl != null) {
+      result
+        ..add('profileImageUrl')
+        ..add(serializers.serialize(object.profileImageUrl,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -86,9 +88,6 @@ class _$User extends User {
     }
     if (name == null) {
       throw new BuiltValueNullFieldError('User', 'name');
-    }
-    if (profileImageUrl == null) {
-      throw new BuiltValueNullFieldError('User', 'profileImageUrl');
     }
     if (email == null) {
       throw new BuiltValueNullFieldError('User', 'email');

@@ -1,18 +1,21 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_tags/tag.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lost_inator/models/item_model.dart';
-import 'package:lost_inator/services/database_services.dart';
-import 'package:lost_inator/services/ml_services.dart';
-import 'package:lost_inator/services/storage_service.dart';
+import 'package:lost_inator/src/actions/index.dart';
+import 'package:lost_inator/src/models/app_state.dart';
+import 'package:lost_inator/src/models/post.dart';
+import 'package:lost_inator/src/services/ml_services.dart';
+import 'package:lost_inator/src/services/storage_service.dart';
 
 class CreateScreen extends StatefulWidget {
+  const CreateScreen({Key key}) : super(key: key);
+
   @override
   _CreateScreenState createState() => _CreateScreenState();
 }
@@ -24,6 +27,7 @@ class _CreateScreenState extends State<CreateScreen> {
   TextEditingController textEditingController = TextEditingController();
   bool _isLoading = false;
   final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
+
   // _getAllItem() {
   //   List<Item> lst = _tagStateKey.currentState?.getAllItem;
   //   if (lst != null)
@@ -104,14 +108,15 @@ class _CreateScreenState extends State<CreateScreen> {
         final String imageUrl = await StorageSerivce.uploadItem(_image);
         final List<String> cloudTags = await MLService.getLabels(_image);
         cloudTags.addAll(_tags);
-        final ItemModel itemModel = ItemModel(
+
+        final Post post = Post.create(
           imageUrl: imageUrl,
-          authorID: user.uid,
+          uid: user.uid,
           tags: _tags,
-          timestamp: Timestamp.fromDate(DateTime.now()),
-          searchTags: cloudTags,
+          cloudTags: cloudTags,
         );
-        DatabaseService.createItem(itemModel);
+
+        StoreProvider.of<AppState>(context).dispatch(CreatePost(post));
         // Reset Data
         setState(() {
           _tags = <String>[];
@@ -130,9 +135,7 @@ class _CreateScreenState extends State<CreateScreen> {
             color: Colors.black,
           ),
         ),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.add), onPressed: _submit)
-        ],
+        actions: <Widget>[IconButton(icon: Icon(Icons.add), onPressed: _submit)],
       ),
       body: SingleChildScrollView(
         child: Container(

@@ -33,7 +33,7 @@ dependencies:
   flutter_image_compress: ^0.6.3
   path_provider: ^1.2.0
   image_cropper: ^1.1.2
-  flutter_tags: "^0.4.5"
+  flutter_tags: ^0.4.5
   firebase_ml_vision: ^0.9.3+5
   uuid: ^2.0.2
   built_value: ^7.0.9
