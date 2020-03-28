@@ -32,10 +32,7 @@ class MyApp extends StatelessWidget {
         SignupScreen.id: (BuildContext context) => SignupScreen(),
         HomeScreen.id: (BuildContext context) => HomeScreen(),
       },
-      theme: ThemeData(
-          primaryIconTheme: Theme.of(context).primaryIconTheme.copyWith(
-                color: Colors.black,
-              )),
+      theme: ThemeData.dark(),
     );
   }
 }

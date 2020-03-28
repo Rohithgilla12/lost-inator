@@ -188,12 +188,12 @@ class _FeedScreenState extends State<FeedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
+        // backgroundColor: Colors.white,
+        title: const Text(
           'Lost-inator',
-          style: TextStyle(
-            color: Colors.black,
-          ),
+          // style: TextStyle(
+          //     // color: Colors.black,
+          //     ),
         ),
         actions: <Widget>[
           IconButton(
