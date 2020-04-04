@@ -3,6 +3,7 @@
 // on 28/03/2020
 
 import 'package:lost_inator/src/actions/index.dart';
+import 'package:lost_inator/src/actions/storage/index.dart';
 import 'package:lost_inator/src/models/app_state.dart';
 import 'package:lost_inator/src/models/post.dart';
 import 'package:redux/redux.dart';
@@ -19,6 +20,7 @@ Reducer<AppState> reducer = combineReducers(<Reducer<AppState>>[
   TypedReducer<AppState, SearchPost>(_searchPost),
   TypedReducer<AppState, SearchPostSuccessful>(_searchPostSuccessful),
   TypedReducer<AppState, SearchPostError>(_searchPostError),
+  TypedReducer<AppState, UploadPostSuccessful>(_uploadPostSuccessful),
 ]);
 
 AppState _reducer(AppState state, dynamic action) {
@@ -32,7 +34,8 @@ AppState _reducer(AppState state, dynamic action) {
 }
 
 AppState _userAction(AppState state, UserAction action) {
-  return state.rebuild((AppStateBuilder b) => b.user = action.user?.toBuilder());
+  return state
+      .rebuild((AppStateBuilder b) => b.user = action.user?.toBuilder());
 }
 
 AppState _signOutSuccessful(AppState state, SignOutSuccessful action) {
@@ -88,5 +91,11 @@ AppState _searchPostSuccessful(AppState state, SearchPostSuccessful action) {
 AppState _searchPostError(AppState state, SearchPostError action) {
   return state.rebuild((AppStateBuilder b) {
     b.isSearching = false;
+  });
+}
+
+AppState _uploadPostSuccessful(AppState state, UploadPostSuccessful action) {
+  return state.rebuild((AppStateBuilder b) {
+    b.downloadUrl = action.downloadUrl;
   });
 }

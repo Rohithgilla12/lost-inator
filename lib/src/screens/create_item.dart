@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -8,10 +7,10 @@ import 'package:flutter_tags/tag.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lost_inator/src/actions/index.dart';
+import 'package:lost_inator/src/actions/storage/index.dart';
 import 'package:lost_inator/src/models/app_state.dart';
 import 'package:lost_inator/src/models/post.dart';
 import 'package:lost_inator/src/services/ml_services.dart';
-import 'package:lost_inator/src/services/storage_service.dart';
 
 class CreateScreen extends StatefulWidget {
   const CreateScreen({Key key}) : super(key: key);
@@ -98,31 +97,40 @@ class _CreateScreenState extends State<CreateScreen> {
       );
     }
 
+    Future<void> _onResponse(AppAction action) async {
+      if (action is UploadPostSuccessful) {
+        final String imageUrl = action.downloadUrl;
+        final List<String> cloudTags = await MLService.getLabels(_image);
+        cloudTags.addAll(_tags);
+
+        final Post post = Post.create(
+          imageUrl: imageUrl,
+          uid: StoreProvider.of<AppState>(context).state.user.id,
+          tags: _tags,
+          cloudTags: cloudTags,
+        );
+
+        StoreProvider.of<AppState>(context).dispatch(CreatePost(post));
+
+        if (mounted) {
+          // Reset Data
+          setState(() {
+            _tags = <String>[];
+            _image = null;
+            _isLoading = false;
+          });
+        }
+      }
+    }
+
     Future<void> _submit() async {
       if (_tags.isNotEmpty && _image != null) {
         setState(() {
           _isLoading = true;
         });
         // Create Item
-        final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-        final String imageUrl = await StorageSerivce.uploadItem(_image);
-        final List<String> cloudTags = await MLService.getLabels(_image);
-        cloudTags.addAll(_tags);
-
-        final Post post = Post.create(
-          imageUrl: imageUrl,
-          uid: user.uid,
-          tags: _tags,
-          cloudTags: cloudTags,
-        );
-
-        StoreProvider.of<AppState>(context).dispatch(CreatePost(post));
-        // Reset Data
-        setState(() {
-          _tags = <String>[];
-          _image = null;
-          _isLoading = false;
-        });
+        StoreProvider.of<AppState>(context)
+            .dispatch(UploadPost(imageFile: _image, response: _onResponse));
       }
     }
 
@@ -135,7 +143,9 @@ class _CreateScreenState extends State<CreateScreen> {
             color: Colors.black,
           ),
         ),
-        actions: <Widget>[IconButton(icon: Icon(Icons.add), onPressed: _submit)],
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.add), onPressed: _submit)
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(

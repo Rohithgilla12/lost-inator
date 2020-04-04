@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PageView(
         controller: _pageController,
         children: <Widget>[
-          FeedScreen(),
+          const FeedScreen(),
           SearchScreen(),
           const CreateScreen(),
           // ProfileScreen(),
@@ -46,7 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             _currentTab = index;
           });
-          _pageController.animateToPage(index, duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+          _pageController.animateToPage(index,
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeIn);
         },
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

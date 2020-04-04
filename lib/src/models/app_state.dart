@@ -18,7 +18,8 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
         ..posts = <Post>[]
         ..isLoadingPosts = false
         ..searchResult = <Post>[]
-        ..isSearching = false;
+        ..isSearching = false
+        ..downloadUrl = '';
     });
   }
 
@@ -34,4 +35,6 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   List<Post> get searchResult;
 
   bool get isSearching;
+
+  String get downloadUrl;
 }

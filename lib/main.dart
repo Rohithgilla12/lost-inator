@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lost_inator/src/actions/index.dart';
 import 'package:lost_inator/src/data/auth_api.dart';
 import 'package:lost_inator/src/data/post_api.dart';
+import 'package:lost_inator/src/data/storage_api.dart';
 import 'package:lost_inator/src/home.dart';
 import 'package:lost_inator/src/middleware/app_middleware.dart';
 import 'package:lost_inator/src/models/app_state.dart';
@@ -18,8 +20,12 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   final PostApi postApi = PostApi(firestore: Firestore.instance);
-  final AuthApi authApi = AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance);
-  final AppMiddleware appMiddleware = AppMiddleware(authApi: authApi, postApi: postApi);
+  final AuthApi authApi =
+      AuthApi(auth: FirebaseAuth.instance, firestore: Firestore.instance);
+  final StorageApi storageApi =
+      StorageApi(firebaseStorage: FirebaseStorage.instance);
+  final AppMiddleware appMiddleware =
+      AppMiddleware(authApi: authApi, postApi: postApi, storageApi: storageApi);
 
   final Store<AppState> store = Store<AppState>(
     reducer,

@@ -5,11 +5,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:lost_inator/src/models/app_state.dart';
-import 'package:lost_inator/src/models/user.dart';
 import 'package:redux/redux.dart';
 
 class IsSearchingContainer extends StatelessWidget {
-  const IsSearchingContainer({Key key, @required this.builder}) : super(key: key);
+  const IsSearchingContainer({Key key, @required this.builder})
+      : super(key: key);
 
   final ViewModelBuilder<bool> builder;
 

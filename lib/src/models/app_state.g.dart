@@ -17,6 +17,8 @@ class _$AppState extends AppState {
   final List<Post> searchResult;
   @override
   final bool isSearching;
+  @override
+  final String downloadUrl;
 
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
@@ -26,7 +28,8 @@ class _$AppState extends AppState {
       this.posts,
       this.isLoadingPosts,
       this.searchResult,
-      this.isSearching})
+      this.isSearching,
+      this.downloadUrl})
       : super._() {
     if (posts == null) {
       throw new BuiltValueNullFieldError('AppState', 'posts');
@@ -39,6 +42,9 @@ class _$AppState extends AppState {
     }
     if (isSearching == null) {
       throw new BuiltValueNullFieldError('AppState', 'isSearching');
+    }
+    if (downloadUrl == null) {
+      throw new BuiltValueNullFieldError('AppState', 'downloadUrl');
     }
   }
 
@@ -57,17 +63,20 @@ class _$AppState extends AppState {
         posts == other.posts &&
         isLoadingPosts == other.isLoadingPosts &&
         searchResult == other.searchResult &&
-        isSearching == other.isSearching;
+        isSearching == other.isSearching &&
+        downloadUrl == other.downloadUrl;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, user.hashCode), posts.hashCode),
-                isLoadingPosts.hashCode),
-            searchResult.hashCode),
-        isSearching.hashCode));
+            $jc(
+                $jc($jc($jc(0, user.hashCode), posts.hashCode),
+                    isLoadingPosts.hashCode),
+                searchResult.hashCode),
+            isSearching.hashCode),
+        downloadUrl.hashCode));
   }
 
   @override
@@ -77,7 +86,8 @@ class _$AppState extends AppState {
           ..add('posts', posts)
           ..add('isLoadingPosts', isLoadingPosts)
           ..add('searchResult', searchResult)
-          ..add('isSearching', isSearching))
+          ..add('isSearching', isSearching)
+          ..add('downloadUrl', downloadUrl))
         .toString();
   }
 }
@@ -107,6 +117,10 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   bool get isSearching => _$this._isSearching;
   set isSearching(bool isSearching) => _$this._isSearching = isSearching;
 
+  String _downloadUrl;
+  String get downloadUrl => _$this._downloadUrl;
+  set downloadUrl(String downloadUrl) => _$this._downloadUrl = downloadUrl;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -116,6 +130,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _isLoadingPosts = _$v.isLoadingPosts;
       _searchResult = _$v.searchResult;
       _isSearching = _$v.isSearching;
+      _downloadUrl = _$v.downloadUrl;
       _$v = null;
     }
     return this;
@@ -144,7 +159,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               posts: posts,
               isLoadingPosts: isLoadingPosts,
               searchResult: searchResult,
-              isSearching: isSearching);
+              isSearching: isSearching,
+              downloadUrl: downloadUrl);
     } catch (_) {
       String _$failedField;
       try {

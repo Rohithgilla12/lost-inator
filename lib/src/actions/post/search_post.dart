@@ -10,7 +10,7 @@ abstract class SearchPost //
         PostAction //
 {
   factory SearchPost(String tag) {
-    return _$SearchPost((b) => b.tag = tag);
+    return _$SearchPost((SearchPostBuilder b) => b.tag = tag);
   }
 
   SearchPost._();
@@ -24,7 +24,8 @@ abstract class SearchPostSuccessful //
         PostAction //
 {
   factory SearchPostSuccessful(List<Post> posts) {
-    return _$SearchPostSuccessful((b) => b.posts = posts);
+    return _$SearchPostSuccessful(
+        (SearchPostSuccessfulBuilder b) => b.posts = posts);
   }
 
   SearchPostSuccessful._();
