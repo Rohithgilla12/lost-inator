@@ -38,8 +38,10 @@ class PostApi {
         .delete();
   }
 
-  Future<List<Post>> search(
-      {@required String uid, @required String tag}) async {
+  Future<List<Post>> search({
+    @required String uid,
+    @required String tag,
+  }) async {
     final QuerySnapshot snapshot = await _firestore
         .collection('items/$uid/userItems')
         .where('searchTags', arrayContains: tag)

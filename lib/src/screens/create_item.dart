@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_tags/tag.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lost_inator/src/actions/index.dart';
@@ -208,7 +208,7 @@ class _CreateScreenState extends State<CreateScreen> {
                         index: index,
                         title: item,
                         removeButton: ItemTagsRemoveButton(),
-                        onRemoved: () {
+                        onPressed: (Item item) {
                           setState(() {
                             _tags.removeAt(index);
                           });

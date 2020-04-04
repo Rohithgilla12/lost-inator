@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_tags/tag.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 import 'package:lost_inator/src/actions/index.dart';
 import 'package:lost_inator/src/containers/is_loading_posts_container.dart';
 import 'package:lost_inator/src/containers/posts_container.dart';

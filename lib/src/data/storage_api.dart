@@ -13,8 +13,10 @@ class StorageApi {
 
   final FirebaseStorage _firebaseStorage;
 
-  Future<File> compressImage(
-      {@required String photoId, @required File imageFile}) async {
+  Future<File> compressImage({
+    @required String photoId,
+    @required File imageFile,
+  }) async {
     final Directory tempDir = await getTemporaryDirectory();
     final String path = tempDir.path;
     final File compressedImage = await FlutterImageCompress.compressAndGetFile(
