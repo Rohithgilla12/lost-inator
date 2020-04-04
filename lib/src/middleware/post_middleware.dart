@@ -25,7 +25,8 @@ class PostMiddleware {
     ];
   }
 
-  Future<void> _createPost(Store<AppState> store, CreatePost action, NextDispatcher next) async {
+  Future<void> _createPost(
+      Store<AppState> store, CreatePost action, NextDispatcher next) async {
     AppAction result;
 
     try {
@@ -38,7 +39,8 @@ class PostMiddleware {
     store.dispatch(result);
   }
 
-  Future<void> _archivePost(Store<AppState> store, ArchivePost action, NextDispatcher next) async {
+  Future<void> _archivePost(
+      Store<AppState> store, ArchivePost action, NextDispatcher next) async {
     AppAction result;
 
     try {
@@ -51,7 +53,8 @@ class PostMiddleware {
     store.dispatch(result);
   }
 
-  Future<void> _listPosts(Store<AppState> store, ListPosts action, NextDispatcher next) async {
+  Future<void> _listPosts(
+      Store<AppState> store, ListPosts action, NextDispatcher next) async {
     next(action);
     AppAction result;
 
@@ -65,12 +68,14 @@ class PostMiddleware {
     store.dispatch(result);
   }
 
-  Future<void> _searchPost(Store<AppState> store, SearchPost action, NextDispatcher next) async {
+  Future<void> _searchPost(
+      Store<AppState> store, SearchPost action, NextDispatcher next) async {
     next(action);
     AppAction result;
 
     try {
-      final List<Post> posts = await _postApi.search(uid: store.state.user.id, tag: action.tag);
+      final List<Post> posts =
+          await _postApi.search(uid: store.state.user.id, tag: action.tag);
       result = SearchPostSuccessful(posts);
     } catch (e) {
       result = SearchPostError(e);

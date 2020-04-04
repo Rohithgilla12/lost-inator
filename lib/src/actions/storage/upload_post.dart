@@ -3,7 +3,7 @@ part of storage_actions;
 abstract class UploadPost //
     implements
         Built<UploadPost, UploadPostBuilder>,
-        AuthAction //
+        StorageAction //
 {
   factory UploadPost(
       {@required File imageFile, @required ActionResponse response}) {
@@ -34,13 +34,14 @@ abstract class UploadPostSuccessful //
   }
 
   UploadPostSuccessful._();
+
   String get downloadUrl;
 }
 
 abstract class UploadPostError //
     implements
         Built<UploadPostError, UploadPostErrorBuilder>,
-        AuthAction,
+        StorageAction,
         ErrorAction //
 {
   factory UploadPostError(Object error) {

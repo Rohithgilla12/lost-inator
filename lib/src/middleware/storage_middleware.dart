@@ -23,7 +23,6 @@ class StorageMiddleware {
     try {
       final String downloadUrl =
           await _storageApi.uploadItem(imageFile: action.imageFile);
-      print('foen: $downloadUrl');
       response = UploadPostSuccessful(downloadUrl);
     } catch (e) {
       response = UploadPostError(e);

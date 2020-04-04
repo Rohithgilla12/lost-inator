@@ -39,7 +39,8 @@ abstract class LoginSuccessful //
         AuthAction //
 {
   factory LoginSuccessful(User user) {
-    return _$LoginSuccessful((LoginSuccessfulBuilder b) => b.user = user.toBuilder());
+    return _$LoginSuccessful(
+        (LoginSuccessfulBuilder b) => b.user = user.toBuilder());
   }
 
   LoginSuccessful._();

@@ -24,7 +24,8 @@ abstract class ArchivePostSuccessful //
         PostAction //
 {
   factory ArchivePostSuccessful(String id) {
-    return _$ArchivePostSuccessful((ArchivePostSuccessfulBuilder b) => b.id = id);
+    return _$ArchivePostSuccessful(
+        (ArchivePostSuccessfulBuilder b) => b.id = id);
   }
 
   ArchivePostSuccessful._();

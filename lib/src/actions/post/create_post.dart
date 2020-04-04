@@ -24,7 +24,8 @@ abstract class CreatePostSuccessful //
         PostAction //
 {
   factory CreatePostSuccessful(Post post) {
-    return _$CreatePostSuccessful((CreatePostSuccessfulBuilder b) => b.post = post.toBuilder());
+    return _$CreatePostSuccessful(
+        (CreatePostSuccessfulBuilder b) => b.post = post.toBuilder());
   }
 
   CreatePostSuccessful._();

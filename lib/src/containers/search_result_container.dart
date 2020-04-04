@@ -9,7 +9,8 @@ import 'package:lost_inator/src/models/post.dart';
 import 'package:redux/redux.dart';
 
 class SearchResultContainer extends StatelessWidget {
-  const SearchResultContainer({Key key, @required this.builder}) : super(key: key);
+  const SearchResultContainer({Key key, @required this.builder})
+      : super(key: key);
 
   final ViewModelBuilder<List<Post>> builder;
 

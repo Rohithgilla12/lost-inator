@@ -20,119 +20,113 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-  File _image;
-  String _caption = '';
-  List<String> _tags = <String>[];
-  TextEditingController textEditingController = TextEditingController();
-  bool _isLoading = false;
   final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
+  TextEditingController textEditingController = TextEditingController();
+  final List<String> _tags = <String>[];
+  String _caption = '';
+  bool _isLoading = false;
+  File _image;
 
-  // _getAllItem() {
-  //   List<Item> lst = _tagStateKey.currentState?.getAllItem;
-  //   if (lst != null)
-  //     lst.where((a) => a.active == true).forEach((a) => print(a.title));
-  // }
+  void _handleTagSubmit(String value) {
+    _tags.add(_caption);
+    setState(() {
+      _caption = '';
+    });
+    textEditingController.clear();
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
+  Future<void> _handleImage(ImageSource source) async {
+    Navigator.pop(context);
+    final File imageFile = await ImagePicker.pickImage(source: source);
 
-    void _handleTagSubmit(String value) {
-      // print(_caption);
-      _tags.add(_caption);
-      setState(() {
-        _caption = '';
-      });
-      textEditingController.clear();
-    }
-
-    Future<File> _cropImage(File imageFile) async {
+    if (imageFile != null) {
       final File croppedImage = await ImageCropper.cropImage(
-          sourcePath: imageFile.path,
-          aspectRatio: const CropAspectRatio(
-            ratioX: 1.0,
-            ratioY: 1.0,
-          ));
-      return croppedImage;
-    }
+        sourcePath: imageFile.path,
+        aspectRatio: const CropAspectRatio(
+          ratioX: 1.0,
+          ratioY: 1.0,
+        ),
+      );
 
-    Future<void> _handleImage(ImageSource source) async {
-      Navigator.pop(context);
-      final File imageFile = await ImagePicker.pickImage(source: source);
-      if (imageFile != null) {
-        final File croppedImage = await _cropImage(imageFile);
+      if (mounted) {
         setState(() {
           _image = croppedImage;
         });
       }
     }
+  }
 
-    void _iosBottomSheet() {
-      print('Add item');
-      showCupertinoModalPopup<dynamic>(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoActionSheet(
-            title: const Text(
-              'Add item 📸',
-              style: TextStyle(fontSize: 20.0),
+  void _iosBottomSheet() {
+    print('Add item');
+    showCupertinoModalPopup<dynamic>(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          title: const Text(
+            'Add item 📸',
+            style: TextStyle(fontSize: 20.0),
+          ),
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              child: const Text('Take photo 📷'),
+              onPressed: () => _handleImage(ImageSource.camera),
             ),
-            actions: <Widget>[
-              CupertinoActionSheetAction(
-                child: const Text('Take photo 📷'),
-                onPressed: () => _handleImage(ImageSource.camera),
-              ),
-              CupertinoActionSheetAction(
-                child: const Text('Choose from Gallery'),
-                onPressed: () => _handleImage(ImageSource.gallery),
-              ),
-            ],
-            cancelButton: CupertinoActionSheetAction(
-              child: const Text('Cancel ❌'),
-              onPressed: () => Navigator.pop(context),
+            CupertinoActionSheetAction(
+              child: const Text('Choose from Gallery'),
+              onPressed: () => _handleImage(ImageSource.gallery),
             ),
-          );
-        },
-      );
-    }
-
-    Future<void> _onResponse(AppAction action) async {
-      if (action is UploadPostSuccessful) {
-        final String imageUrl = action.downloadUrl;
-        final List<String> cloudTags = await MLService.getLabels(_image);
-        cloudTags.addAll(_tags);
-
-        final Post post = Post.create(
-          imageUrl: imageUrl,
-          uid: StoreProvider.of<AppState>(context).state.user.id,
-          tags: _tags,
-          cloudTags: cloudTags,
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('Cancel ❌'),
+            onPressed: () => Navigator.pop(context),
+          ),
         );
+      },
+    );
+  }
 
-        StoreProvider.of<AppState>(context).dispatch(CreatePost(post));
+  Future<void> _onResponse(AppAction action) async {
+    if (action is UploadPostSuccessful) {
+      final String imageUrl = action.downloadUrl;
+      final List<String> cloudTags = await MLService.getLabels(_image);
+      cloudTags.addAll(_tags);
 
-        if (mounted) {
-          // Reset Data
-          setState(() {
-            _tags = <String>[];
-            _image = null;
-            _isLoading = false;
-          });
-        }
-      }
-    }
+      final Post post = Post.create(
+        imageUrl: imageUrl,
+        uid: StoreProvider.of<AppState>(context).state.user.id,
+        tags: _tags,
+        cloudTags: cloudTags,
+      );
 
-    Future<void> _submit() async {
-      if (_tags.isNotEmpty && _image != null) {
+      StoreProvider.of<AppState>(context).dispatch(CreatePost(post));
+
+      if (mounted) {
+        // Reset Data
         setState(() {
-          _isLoading = true;
+          _tags.clear();
+          _image = null;
+          _isLoading = false;
         });
-        // Create Item
-        StoreProvider.of<AppState>(context)
-            .dispatch(UploadPost(imageFile: _image, response: _onResponse));
       }
     }
+  }
+
+  Future<void> _submit() async {
+    if (_tags.isNotEmpty && _image != null) {
+      setState(() {
+        _isLoading = true;
+      });
+      // Create Item
+      StoreProvider.of<AppState>(context)
+          .dispatch(UploadPost(imageFile: _image, response: _onResponse));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    final double width = size.width;
+    final double height = size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -144,7 +138,10 @@ class _CreateScreenState extends State<CreateScreen> {
           ),
         ),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.add), onPressed: _submit)
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: _submit,
+          )
         ],
       ),
       body: SingleChildScrollView(
@@ -184,7 +181,7 @@ class _CreateScreenState extends State<CreateScreen> {
                 height: 20.0,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: TextField(
                   controller: textEditingController,
                   onChanged: (String input) => _caption = input,
@@ -200,7 +197,7 @@ class _CreateScreenState extends State<CreateScreen> {
               if (_tags.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                    vertical: 15.0,
+                    vertical: 16.0,
                   ),
                   child: Tags(
                     key: _tagStateKey,

@@ -29,7 +29,8 @@ abstract class Post implements Built<Post, PostBuilder> {
     });
   }
 
-  factory Post.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
+  factory Post.fromJson(Map<dynamic, dynamic> json) =>
+      serializers.deserializeWith(serializer, json);
 
   Post._();
 

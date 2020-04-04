@@ -57,7 +57,8 @@ class FeedScreen extends StatelessWidget {
                           builder: (BuildContext context) {
                             return CupertinoAlertDialog(
                               title: const Text('Archive Alert'),
-                              content: const Text('Are you sure you want to archive?'),
+                              content: const Text(
+                                  'Are you sure you want to archive?'),
                               actions: <Widget>[
                                 CupertinoDialogAction(
                                   child: const Text('No'),
@@ -69,7 +70,8 @@ class FeedScreen extends StatelessWidget {
                                   isDefaultAction: true,
                                   child: const Text('Yes'),
                                   onPressed: () {
-                                    StoreProvider.of<AppState>(context).dispatch(ArchivePost(post));
+                                    StoreProvider.of<AppState>(context)
+                                        .dispatch(ArchivePost(post));
                                     Navigator.pop(context);
                                   },
                                 )
@@ -82,7 +84,8 @@ class FeedScreen extends StatelessWidget {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text('Alert!'),
-                              content: const Text('Are you sure you want to logout!'),
+                              content: const Text(
+                                  'Are you sure you want to logout!'),
                               actions: <Widget>[
                                 FlatButton(
                                     child: const Text('No'),
@@ -92,7 +95,8 @@ class FeedScreen extends StatelessWidget {
                                 FlatButton(
                                   child: const Text('Yes'),
                                   onPressed: () {
-                                    StoreProvider.of<AppState>(context).dispatch(ArchivePost(post));
+                                    StoreProvider.of<AppState>(context)
+                                        .dispatch(ArchivePost(post));
                                     Navigator.pop(context);
                                   },
                                 ),

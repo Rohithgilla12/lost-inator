@@ -56,7 +56,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         children: <Widget>[
           Text(
             'Lost-inator',
-            style: TextStyle(fontSize: 32.0, color: Colors.brown, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 32.0,
+                color: Colors.brown,
+                fontWeight: FontWeight.bold),
           ),
           const SizedBox(
             height: 20.0,
@@ -84,7 +87,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       labelText: 'Name',
                       icon: Icon(Icons.person_outline),
                     ),
-                    validator: (String input) => input.isEmpty ? 'Please input valid name' : null,
+                    validator: (String input) =>
+                        input.isEmpty ? 'Please input valid name' : null,
                     onSaved: (String input) => _name = input,
                   ),
                 ),
@@ -98,7 +102,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       labelText: 'Email',
                       icon: Icon(Icons.mail_outline),
                     ),
-                    validator: (String input) => !input.contains('@') ? 'Please input valid email id' : null,
+                    validator: (String input) => !input.contains('@')
+                        ? 'Please input valid email id'
+                        : null,
                     onSaved: (String input) => _email = input,
                   ),
                 ),
@@ -112,7 +118,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       labelText: 'Password',
                       icon: Icon(Icons.vpn_key),
                     ),
-                    validator: (String input) => input.length < 6 ? 'Check your password field' : null,
+                    validator: (String input) =>
+                        input.length < 6 ? 'Check your password field' : null,
                     onSaved: (String input) => _password = input,
                     obscureText: true,
                   ),
@@ -131,7 +138,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Container(
                   width: 250.0,
                   child: FlatButton(
-                    onPressed: () => Navigator.pushNamed(context, LoginScreen.id),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, LoginScreen.id),
                     color: Colors.brown[300],
                     child: const Text('Login'),
                   ),

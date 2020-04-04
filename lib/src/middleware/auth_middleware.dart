@@ -25,7 +25,8 @@ class AuthMiddleware {
     ];
   }
 
-  Future<void> _bootstrap(Store<AppState> store, Bootstrap action, NextDispatcher next) async {
+  Future<void> _bootstrap(
+      Store<AppState> store, Bootstrap action, NextDispatcher next) async {
     AppAction result;
 
     try {
@@ -41,12 +42,15 @@ class AuthMiddleware {
     }
   }
 
-  Future<void> _signUp(Store<AppState> store, SignUp action, NextDispatcher next) async {
-    print('Email is  ${action.email} , password is ${action.password} and name is ${action.name} ');
+  Future<void> _signUp(
+      Store<AppState> store, SignUp action, NextDispatcher next) async {
+    print(
+        'Email is  ${action.email} , password is ${action.password} and name is ${action.name} ');
     AppAction result;
 
     try {
-      final User user = await _authApi.signUpUser(name: action.name, email: action.email, password: action.password);
+      final User user = await _authApi.signUpUser(
+          name: action.name, email: action.email, password: action.password);
       result = SignUpSuccessful(user);
     } catch (e) {
       result = SignUpError(e);
@@ -56,12 +60,14 @@ class AuthMiddleware {
     action.response(result);
   }
 
-  Future<void> _login(Store<AppState> store, Login action, NextDispatcher next) async {
+  Future<void> _login(
+      Store<AppState> store, Login action, NextDispatcher next) async {
     print('Email is  ${action.email} and password is ${action.password}');
     AppAction result;
 
     try {
-      final User user = await _authApi.login(email: action.email, password: action.password);
+      final User user =
+          await _authApi.login(email: action.email, password: action.password);
       result = LoginSuccessful(user);
     } catch (e) {
       result = LoginError(e);
@@ -71,7 +77,8 @@ class AuthMiddleware {
     action.response(result);
   }
 
-  Future<void> _signOut(Store<AppState> store, SignOut action, NextDispatcher next) async {
+  Future<void> _signOut(
+      Store<AppState> store, SignOut action, NextDispatcher next) async {
     AppAction result;
 
     try {

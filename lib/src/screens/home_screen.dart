@@ -28,10 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        children: <Widget>[
-          const FeedScreen(),
+        children: const <Widget>[
+          FeedScreen(),
           SearchScreen(),
-          const CreateScreen(),
+          CreateScreen(),
           // ProfileScreen(),
         ],
         onPageChanged: (int index) {
@@ -46,9 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             _currentTab = index;
           });
-          _pageController.animateToPage(index,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeIn);
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeIn,
+          );
         },
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

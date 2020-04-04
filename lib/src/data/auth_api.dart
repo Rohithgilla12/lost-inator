@@ -23,17 +23,21 @@ class AuthApi {
       return null;
     }
 
-    final DocumentSnapshot snapshot = await _firestore.document('users/${user.uid}').get();
+    final DocumentSnapshot snapshot =
+        await _firestore.document('users/${user.uid}').get();
     return User.fromJson(<String, dynamic>{...snapshot.data, 'id': user.uid});
   }
 
-  Future<User> signUpUser({@required String name, @required String email, @required String password}) async {
-    final AuthResult _authResult = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<User> signUpUser(
+      {@required String name,
+      @required String email,
+      @required String password}) async {
+    final AuthResult _authResult = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
     final FirebaseUser signedInUser = _authResult.user;
 
-    _firestore
-        .document('users/${signedInUser.uid}')
-        .setData(<String, dynamic>{'name': name, 'email': email, 'profileImageUrl': ''});
+    _firestore.document('users/${signedInUser.uid}').setData(
+        <String, dynamic>{'name': name, 'email': email, 'profileImageUrl': ''});
 
     return User(
       id: signedInUser.uid,
@@ -42,9 +46,12 @@ class AuthApi {
     );
   }
 
-  Future<User> login({@required String email, @required String password}) async {
-    final AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-    final DocumentSnapshot snapshot = await _firestore.document('users/${result.user.uid}').get();
+  Future<User> login(
+      {@required String email, @required String password}) async {
+    final AuthResult result = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
+    final DocumentSnapshot snapshot =
+        await _firestore.document('users/${result.user.uid}').get();
     return User.fromJson(snapshot.data);
   }
 

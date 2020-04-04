@@ -27,12 +27,14 @@ class TimestampDateTimeSerializer implements PrimitiveSerializer<DateTime> {
   final String wireName = 'DateTime';
 
   @override
-  Object serialize(Serializers serializers, DateTime dateTime, {FullType specifiedType = FullType.unspecified}) {
+  Object serialize(Serializers serializers, DateTime dateTime,
+      {FullType specifiedType = FullType.unspecified}) {
     return Timestamp.fromDate(dateTime.toUtc());
   }
 
   @override
-  DateTime deserialize(Serializers serializers, Object serialized, {FullType specifiedType = FullType.unspecified}) {
+  DateTime deserialize(Serializers serializers, Object serialized,
+      {FullType specifiedType = FullType.unspecified}) {
     if (serialized is int) {
       return DateTime.fromMillisecondsSinceEpoch(serialized).toUtc();
     } else if (serialized is Timestamp) {
@@ -41,6 +43,7 @@ class TimestampDateTimeSerializer implements PrimitiveSerializer<DateTime> {
       return DateTime.parse(serialized);
     }
 
-    throw ArgumentError('Unknown date format $serialized ${serialized.runtimeType}');
+    throw ArgumentError(
+        'Unknown date format $serialized ${serialized.runtimeType}');
   }
 }

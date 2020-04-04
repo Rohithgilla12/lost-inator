@@ -9,6 +9,8 @@ import 'package:lost_inator/src/models/app_state.dart';
 import 'package:lost_inator/src/models/post.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({Key key}): super(key: key);
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -17,7 +19,8 @@ class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   void _clearSearch() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _searchController.clear());
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _searchController.clear());
   }
 
   Widget itemView(Post post) {
@@ -76,7 +79,8 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               onSubmitted: (String input) {
                 if (input.isNotEmpty) {
-                  StoreProvider.of<AppState>(context).dispatch(SearchPost(input));
+                  StoreProvider.of<AppState>(context)
+                      .dispatch(SearchPost(input));
                 }
               },
             ),

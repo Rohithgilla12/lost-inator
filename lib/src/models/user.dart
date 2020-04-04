@@ -23,7 +23,8 @@ abstract class User implements Built<User, UserBuilder> {
     });
   }
 
-  factory User.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
+  factory User.fromJson(Map<dynamic, dynamic> json) =>
+      serializers.deserializeWith(serializer, json);
 
   User._();
 
