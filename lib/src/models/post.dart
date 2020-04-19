@@ -13,14 +13,15 @@ abstract class Post implements Built<Post, PostBuilder> {
   factory Post([void Function(PostBuilder b) updates]) = _$Post;
 
   factory Post.create({
-    @required String imageUrl,
     @required String uid,
+    @required String imageUrl,
     @required List<String> tags,
     @required List<String> cloudTags,
+    String id,
   }) {
     return _$Post((PostBuilder b) {
       b
-        ..id = ''
+        ..id = id ?? ''
         ..imageUrl = imageUrl
         ..authorID = uid
         ..tags = ListBuilder<String>(tags)

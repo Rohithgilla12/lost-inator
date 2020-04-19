@@ -8,6 +8,7 @@ void main() {
   final Firestore firestore = MockFirestore();
   final PostApi api = PostApi(firestore: firestore);
 
+  const String uid = 'uid';
   const String id = 'id';
   const String imageUrl = 'imageUrl';
   final List<String> tags = <String>['tags'];
@@ -18,14 +19,29 @@ void main() {
   // final DateTime timestamp = DateTime.parse('1969-07-20 20:18:04Z');
 
   final Post expectedPost = Post.create(
-      imageUrl: imageUrl, uid: id, tags: tags, cloudTags: searchTags);
+    imageUrl: imageUrl,
+    uid: uid,
+    tags: tags,
+    cloudTags: searchTags,
+  );
 
   test('create', () async {
-    print(expectedPost.json);
+    when(postDocumentReference.documentID).thenReturn(id);
+    when(collectionReference.add(captureAny))
+        .thenAnswer((_) async => postDocumentReference);
     when(firestore.collection(captureAny)).thenReturn(collectionReference);
-    api.create(expectedPost);
-    final VerificationResult result = verify(firestore.collection(captureAny));
-    print(result);
+
+    final Post data = await api.create(expectedPost);
+    expect(data.id, id);
+    expect(data.json..remove('id'), expectedPost.json..remove('id'));
+
+    final VerificationResult firestoreResult =
+        verify(firestore.collection(captureAny));
+    expect(firestoreResult.captured[0], 'items/${data.authorID}/userItems');
+
+    final VerificationResult collectionResult =
+        verify(collectionReference.add(captureAny));
+    expect(collectionResult.captured[0], expectedPost.json);
   });
 }
 
