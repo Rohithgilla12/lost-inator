@@ -23,9 +23,8 @@ void main() {
   final PostApi postApi = PostApi(firestore: Firestore.instance);
   final StorageApi storageApi =
       StorageApi(firebaseStorage: FirebaseStorage.instance);
-  final AppMiddleware appMiddleware =
-      AppMiddleware(postApi: postApi, storageApi: storageApi);
-
+  final AppMiddleware appMiddleware = AppMiddleware(storageApi: storageApi);
+ 
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: AppState.initialState(),

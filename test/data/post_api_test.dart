@@ -15,8 +15,6 @@ void main() {
   const List<String> searchTags = <String>['searchTags'];
   final CollectionReference collectionReference = MockCollectionReference();
   final DocumentReference postDocumentReference = MockDocumentReference();
-  // const String authorID = "authorID";
-  // final DateTime timestamp = DateTime.parse('1969-07-20 20:18:04Z');
 
   final Post expectedPost = Post.create(
     imageUrl: imageUrl,
