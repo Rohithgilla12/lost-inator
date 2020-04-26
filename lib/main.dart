@@ -19,12 +19,10 @@ import 'package:redux_epics/redux_epics.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  final PostApi postApi = PostApi(firestore: Firestore.instance);
   final StorageApi storageApi =
       StorageApi(firebaseStorage: FirebaseStorage.instance);
   final AppMiddleware appMiddleware = AppMiddleware(storageApi: storageApi);
- 
+
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: AppState.initialState(),
